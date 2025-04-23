@@ -38,7 +38,7 @@ const getProducts = [
 	},
 	{
 		title: "Воздух",
-		price: "339 ₽",
+		price: "9999999999999999₽",
 		img: "https://avatars.mds.yandex.net/i?id=e0fa6abca83a1fabd8e01f338c95ca0a_l-7543982-images-thumbs&n=13",
 	},
 	{
@@ -69,6 +69,7 @@ function addEventsOnBtns() {
             for(let i = 0; i < CaretPosition.item.lenght; i++) {
                 if (CaretPosition.items[i].id == productId){
                     CaretPosition.items[i].count++;
+					renderCart()
                     return;
                 }
             }
@@ -99,17 +100,21 @@ products = getProducts();
 function renderCart() {
 	cartList.innerHTML = "";
 	cart.totalCount = 0;
-	cart.items.forEach(() => {
+	cart.totalPrice = 0;
+	cart.items.forEach((i) => {
 	 const product = products.find((p) => p.id == i.id);
 	 cart.totalPrice += i.count * product.discountPrice;
    
 	 cartList.innerHTML += `
 	  <div class="cartItem">
 	   <p>$${product.discountPrice}</p>
-	   <p>${i.count}</p>
+	   <p>${i.product.price}</p>
+	   <p>${i.count * product.price}</p>
 	   <button class="removeBtn">Remove</button>
 	  </div>
 	 `;
+	 cart.totalCount += i.count;
+	 cart.totalPrice += i.count * product.price;
 	});
 	totalPrice.innerHTML = `Total price: ${cart.totalPrice}$`;
    }
