@@ -1,5 +1,12 @@
 import "./style.css";
 
+const productList = document.getElementById("product-list");
+const btnBuy = document.getElementById("btnBuy");
+const cartBox = document.getElementById(".cartBox");
+const hide =  document.getElementById(".hide")
+
+let showCart = false;
+
 let products = [];
 let cart = {
 	item: [],
@@ -7,11 +14,12 @@ let cart = {
 	total: 0,
 };
 
-const productsMain = [
+const getProducts = [
 	{
 		title: "магнитола",
 		price: "999 ₽",
 		img: "https://express-china.ru/upload/iblock/909/9090b71c713bcbc78f5b083998672f69.jpg",
+		// button: "buy",
 	},
 	{
 		title: "очки",
@@ -40,22 +48,22 @@ const productsMain = [
 	},
 ];
 
-const productList = document.getElementById("product-list");
 
-productsMain.forEach((product) => {
+getProducts.forEach((product) => {
 	const card = document.createElement("div");
 	card.className = "product-card";
 	card.innerHTML = `
     <img src="${product.img}" alt="${product.title}" />
     <h3>${product.title}</h3>
     <p class="price">${product.price}</p>
+	<button>Buy</button>
   `;
 	productList.appendChild(card);
 });
 
 function addEventsOnBtns() {
     const btns = document.querySelectorAll(".card-btn");
-    btns.forEach(b) => {
+    btns.forEach((b) => {
         b.addEventListener("click", () => {
             const productId = b.getAttribute("data-id");
             for(let i = 0; i < CaretPosition.item.lenght; i++) {
@@ -69,8 +77,44 @@ function addEventsOnBtns() {
                 count: 1,
             })
         })
-    }
+    })
 }
+
+function toggleCart(e) {
+	e.preventDefault();
+	if (showCart) {
+		cartBox.classList.add("hide");
+	 showCart = false;
+	} else {
+	 cartBox.classList.remove("hide");
+	 showCart = true;
+	}
+   
+	// cartBox.classList.toggle("hide");
+	// showCart = !showCart
+}
+
+products = getProducts();
+
+function renderCart() {
+	cartList.innerHTML = "";
+	cart.totalCount = 0;
+	cart.items.forEach(() => {
+	 const product = products.find((p) => p.id == i.id);
+	 cart.totalPrice += i.count * product.discountPrice;
+   
+	 cartList.innerHTML += `
+	  <div class="cartItem">
+	   <p>$${product.discountPrice}</p>
+	   <p>${i.count}</p>
+	   <button class="removeBtn">Remove</button>
+	  </div>
+	 `;
+	});
+	totalPrice.innerHTML = `Total price: ${cart.totalPrice}$`;
+   }
 
 renderProducts();
 addEventsOnBtns();
+renderCart();
+toggleCart();
